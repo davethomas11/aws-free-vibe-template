@@ -1,0 +1,16 @@
+{
+  "name": "aws-free-vibe-template",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Reusable $0 AWS Always-Free + GitHub Pages Bootstrap Template for Vibe Coding",
+  "scripts": {
+    "bootstrap": "node scripts/bootstrap.mjs",
+    "bootstrap:cloud": "node scripts/bootstrap.mjs --deploy",
+    "setup": "cd frontend && npm install",
+    "dev:backend": "node backend/local-server.mjs",
+    "dev:frontend": "npm --prefix frontend run dev",
+    "build:frontend": "npm --prefix frontend run build",
+    "deploy:backend": "cd backend && sam deploy --stack-name aws-free-vibe-template --region us-west-2 --resolve-s3 --capabilities CAPABILITY_IAM --no-confirm-changeset --no-fail-on-empty-changeset",
+    "teardown:backend": "cd backend && sam delete --stack-name aws-free-vibe-template --region us-west-2 --no-prompts"
+  }
+}

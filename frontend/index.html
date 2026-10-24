@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Web Vibe Starter</title>
+    <link rel="stylesheet" href="./src/style.css" />
+  </head>
+  <body>
+    <main class="container">
+      <header>
+        <span class="badge">$0 Free-Tier Stack</span>
+        <h1>Web Vibe Starter</h1>
+        <p class="subtitle">
+          GitHub Pages Frontend + AWS Lambda Function URL + Provisioned DynamoDB
+        </p>
+      </header>
+
+      <section class="card">
+        <div class="status-row">
+          <span>API Endpoint:</span>
+          <code id="api-url">loading...</code>
+        </div>
+        <div class="status-row">
+          <span>Backend Status:</span>
+          <span id="api-status" class="status-pill">Checking...</span>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2>Quick Test: Items Store</h2>
+        <form id="item-form" class="row-form">
+          <input
+            id="item-input"
+            type="text"
+            placeholder="Add an item to Lambda / DynamoDB..."
+            required
+          />
+          <button type="submit">Add Item</button>
+        </form>
+        <ul id="items-list" class="items-list"></ul>
+      </section>
+    </main>
+    <script type="module" src="./src/main.js"></script>
+  </body>
+</html>

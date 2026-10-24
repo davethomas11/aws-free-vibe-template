@@ -1,0 +1,69 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  web-vibe-starter backend — 100% Always-Free AWS Stack
+  (Lambda Function URL + Provisioned 5 RCU / 5 WCU DynamoDB Table)
+
+Globals:
+  Function:
+    Timeout: 10
+    MemorySize: 128
+    Runtime: nodejs20.x
+    Architectures:
+      - x86_64
+
+Resources:
+  # Always-Free Lambda Function with dedicated HTTPS Function URL (no API Gateway cost)
+  ApiFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: src/
+      Handler: handler.handler
+      Description: Vibe coding backend API via Lambda Function URL
+      Environment:
+        Variables:
+          TABLE_NAME: !Ref AppTable
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref AppTable
+      FunctionUrlConfig:
+        AuthType: NONE
+        Cors:
+          AllowOrigins:
+            - "*"
+          AllowMethods:
+            - GET
+            - POST
+            - PUT
+            - DELETE
+          AllowHeaders:
+            - content-type
+            - authorization
+          MaxAge: 86400
+
+  # Always-Free DynamoDB Table (PROVISIONED mode: 5 RCU / 5 WCU out of 25 free)
+  AppTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      BillingMode: PROVISIONED
+      ProvisionedThroughput:
+        ReadCapacityUnits: 5
+        WriteCapacityUnits: 5
+      AttributeDefinitions:
+        - AttributeName: pk
+          AttributeType: S
+        - AttributeName: sk
+          AttributeType: S
+      KeySchema:
+        - AttributeName: pk
+          KeyType: HASH
+        - AttributeName: sk
+          KeyType: RANGE
+
+Outputs:
+  ApiFunctionUrl:
+    Description: "HTTPS Lambda Function URL (set this as VITE_API_URL in your frontend)"
+    Value: !GetAtt ApiFunctionUrl.FunctionUrl
+  DynamoDBTableName:
+    Description: "Provisioned Free-Tier DynamoDB Table Name"
+    Value: !Ref AppTable
